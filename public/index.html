@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <link href="style.css" rel="stylesheet"  type="text/css"/>
+        <link href="js/jquery-ui.css" rel="stylesheet"  type="text/css"/>
+
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script src="js/jsonview.js"></script>
+        <script src="js/util.js"></script>
+        <script src="js/chatbot.js"></script>
+
+    </head>
+    <body>
+        <div class="info">
+
+        </div>
+        <div class="info-tmp">
+
+        </div>
+
+        <div class="chatbox">
+            <div class="header">
+                <div class="avatar"></div>
+                <div class="title">Smart Assistance</div>
+                <div class="close">X</div>
+            </div>
+            <div class="subheader">
+                <div class="quota-info">Quota remaining: 10</div>
+                <div class="btn-new-session">+ New Session</div>
+            </div>
+            <div class="content">
+
+
+            </div>
+            <div class="footer">
+                <div class="separator">
+
+                </div>
+                <div class="separator">
+
+                </div>
+                <div class="text-input">
+                    <input type="text" id="chatText" />
+                </div>
+                <div class="separator">
+
+                </div>
+                <div id="btnSend" class="button">
+                    Send
+                </div>
+
+            </div>
+        </div>
+
+        <div id="btnChat" class="chatbtn">
+            <div class="icon">
+
+            </div>
+            <div style="width: 20px;">
+
+            </div>
+            <div id="chatBtn" class="text">
+                Chat with me
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    
+    $(document).ready(function(){
+        Chatbot.init(
+            {   user: "miftahul.huda@devoteam.com", 
+                role: "admin", 
+                fullname: "Miftahul Huda"
+            }, "http://localhost:8000/api/v1");
+    });
+</script>
