@@ -1,6 +1,6 @@
 var Util = 
 {
-    token: "aaaaaaaaaaaaaaaaaaaaaa",
+    token: "",
     get: function(url)
     {
       console.log("Util.get")
