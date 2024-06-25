@@ -103,7 +103,7 @@ var Chatbot =
             })
 
             //Chatbtn click start new session
-            $("#chatBtn").on("click", function()
+            $(".chatbtn").on("click", function()
             {
 
                 if(Chatbot.firstStart)
@@ -226,15 +226,6 @@ var Chatbot =
                 </div>
     
                 <div id="btnChat" class="chatbtn">
-                    <div class="icon">
-        
-                    </div>
-                    <div style="width: 20px;">
-        
-                    </div>
-                    <div id="chatBtn" class="text">
-                        Chat with me
-                    </div>
                 </div>
             </div>
             `;
@@ -326,31 +317,39 @@ var Chatbot =
             let q=  $("#chatText").val();
             $("#chatText").val("");
 
-            let chatItem = Chatbot.createChatItem("me", q);
-            $(".chatbox .content").append(chatItem);
-
-            let url = Chatbot.baseUrl + Chatbot.getSearchUrl(Chatbot.chatType) + "?session=" + Chatbot.session;
-            let data = {
-                query: q
-            }
-            console.log(url);
-            console.log(data);
-            let chatWaiting = Chatbot.createChatWaiting();
-            $(".chatbox .content").append(chatWaiting);
-
-            Chatbot.scrollToBottom();
-
-            Util.post(url, data).then((response)=>{
-                let text = response.data.response;
-                let resp = JSON.parse(text);
-
-                chatItem = Chatbot.createChatItem("bot", resp);
-                Chatbot.showQuota(response.data.quota);
-
-                $('.chat-waiting-animation').remove();
+            if(q.trim() == "")
+                alert("Teks chat harus diisi")
+            else if(Chatbot.quota == 0)
+                alert("Kuota pertanyaan telah habis")
+            else
+            {
+                let chatItem = Chatbot.createChatItem("me", q);
                 $(".chatbox .content").append(chatItem);
-                //Chatbot.scrollToBottom();
-            })
+    
+                let url = Chatbot.baseUrl + Chatbot.getSearchUrl(Chatbot.chatType) + "?session=" + Chatbot.session;
+                let data = {
+                    query: q
+                }
+                console.log(url);
+                console.log(data);
+                let chatWaiting = Chatbot.createChatWaiting();
+                $(".chatbox .content").append(chatWaiting);
+    
+                Chatbot.scrollToBottom();
+    
+                Util.post(url, data).then((response)=>{
+                    let text = response.data.response;
+                    let resp = JSON.parse(text);
+
+                    Chatbot.quota = response.data.quota;
+                    chatItem = Chatbot.createChatItem("bot", resp);
+                    Chatbot.showQuota(Chatbot.quota);
+    
+                    $('.chat-waiting-animation').remove();
+                    $(".chatbox .content").append(chatItem);
+                    //Chatbot.scrollToBottom();
+                })
+            }
   
         });
         return promise;

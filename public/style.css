@@ -114,11 +114,11 @@ div
 
 .chatbtn
 {
-    width: 250px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
     display: flex;
-    border: solid 3px rgb(89, 210, 89);
+    border: solid 1px rgb(89, 210, 89);
     background-color: rgb(165, 224, 165);
     border-radius: 30px;
     padding: 10;
@@ -129,9 +129,11 @@ div
     -moz-box-shadow: 4px 7px 40px -8px rgba(135,171,99,0.75);
 
     position: absolute;
-    right: 50px;
-    bottom: 50px;
-
+    right: 20px;
+    bottom: 20px;
+    background: url(images/chat.png) no-repeat;   
+    background-size: auto 80%;
+    background-position: center;
 }
 
 .chatbtn-disabled
@@ -278,6 +280,11 @@ div
     color: #666;
     overflow: auto;
     padding: 10px;
+    background-image: url("images/pegadaian_logo.png");
+    background-size: 90% auto; /* or contain, or specific dimensions */
+    background-repeat: no-repeat; /* or repeat, repeat-x, repeat-y */
+    background-position: center;
+
 }
 
 .chatbox > .footer
