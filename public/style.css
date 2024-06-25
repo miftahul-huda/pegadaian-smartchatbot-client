@@ -445,7 +445,6 @@ div
     color: #333;
     font-size: 11pt;
     border-radius: 10px;
-    overflow-x: auto;
 }
 
 .chat-waiting-animation
@@ -462,4 +461,10 @@ div
     height: 10px;
     float: right;
     width: 100%;
+}
+
+.chat-item-table-container
+{
+  width: 100%;
+  overflow-x: auto;
 }

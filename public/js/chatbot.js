@@ -383,7 +383,7 @@ var Chatbot =
 
         if(htmlTable != null)
         {
-            newText = "<div>" + newText + "</div><div class='vseparator'></div><div>" + htmlTable.outerHTML + "</div>";
+            newText = "<div>" + newText + "</div><div class='vseparator'></div><div class='chat-item-table-container'>" + htmlTable.outerHTML + "</div>";
 
         }
 
