@@ -1,0 +1,26 @@
+service: chatbot
+runtime: nodejs
+env: flex 
+
+# Optional runtime configuration
+runtime_config:
+  operating_system: ubuntu22  # Choose your OS (ubuntu22 or debian11)
+
+# Manual scaling settings (adjust to your needs)
+manual_scaling:
+  instances: 1  
+
+# Resource allocation (adjust for production)
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+# Environment variables
+env_variables:
+  NODE_ENV: production  # or 'development'
+
+# Handlers (map URLs to scripts)
+handlers:
+- url: /.*  # Match all URLs
+  script: auto  # Automatically determine the entry point based on package.json

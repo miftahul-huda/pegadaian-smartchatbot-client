@@ -8,6 +8,7 @@ var Chatbot =
     chatType: 'auto',
     searchUrls: null,
     firstStart: true,
+    chatHistory: [],
     //Init Chatbox
     init: function(userdata, baseUrl)
     {
@@ -341,7 +342,9 @@ var Chatbot =
 
             Util.post(url, data).then((response)=>{
                 let text = response.data.response;
-                chatItem = Chatbot.createChatItem("bot", text);
+                let resp = JSON.parse(text);
+
+                chatItem = Chatbot.createChatItem("bot", resp);
                 Chatbot.showQuota(response.data.quota);
 
                 $('.chat-waiting-animation').remove();
@@ -353,8 +356,23 @@ var Chatbot =
         return promise;
     }
     ,
-    createChatItem: function(itemType, text)
+    createChatItem: function(itemType, response)
     {
+        let text = "";
+        if(itemType == "me")
+            text = response;
+        else
+        {
+            if(response.result.penjelasan != null)
+            {
+                text = response.result.penjelasan
+            }
+            else
+            {
+                text= response.result;
+            }
+        }
+
         text = text.replace(/\n/g, "<br>");
         newText = text.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
         newText = newText.replace(/\*/g, '-');
