@@ -359,6 +359,7 @@ var Chatbot =
     createChatItem: function(itemType, response)
     {
         let text = "";
+        let htmlTable = null;
         if(itemType == "me")
             text = response;
         else
@@ -366,6 +367,9 @@ var Chatbot =
             if(response.result.penjelasan != null)
             {
                 text = response.result.penjelasan
+                let data = response.result.table;
+                data = Chatbot.tableDataToJson(data);
+                htmlTable = Chatbot.createTableFromJSON(data);
             }
             else
             {
@@ -376,6 +380,12 @@ var Chatbot =
         text = text.replace(/\n/g, "<br>");
         newText = text.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
         newText = newText.replace(/\*/g, '-');
+
+        if(htmlTable != null)
+        {
+            newText = "<div>" + newText + "</div><div class='vseparator'></div><div>" + htmlTable.outerHTML + "</div>";
+
+        }
 
         let html = "<div class='chat-item-" + itemType + "'>" + newText + "</div><div class='vseparator'></div>";
         return html;
@@ -402,5 +412,65 @@ var Chatbot =
     scrollToBottom: function() {
         $('.chatbox > .content').scrollTop($('.chatbox > .content')[0].scrollHeight);
     }
+    ,
+    tableDataToJson: function(tableText) {
+        const rows = tableText.trim().split("\n"); // Split into rows
+        const headers = rows[0].split("|").map(h => h.trim()); // Extract headers
+        const jsonData = [];
+      
+        for (let i = 2; i < rows.length; i++) { // Start from 2nd row (data)
+          const rowData = rows[i].split("|").map(c => c.trim());
+      
+          const rowObject = {};
+          for (let j = 0; j < headers.length; j++) {
+            rowObject[headers[j]] = rowData[j];
+          }
+          jsonData.push(rowObject);
+        }
+      
+        return jsonData; // Convert array to JSON string
+    }
+    ,
+    createTableFromJSON: function(jsonData, tableId = "myTable") {
+        console.log("json data")
+        console.log(jsonData)
+        // Validate input
+        if (!jsonData || !Array.isArray(jsonData) || jsonData.length === 0) {
+          throw new Error("Invalid JSON data provided.");
+        }
+      
+        // Create table element
+        const table = document.createElement("table");
+        table.id = tableId;
+      
+        // Extract headers from the first data object
+        const headers = Object.keys(jsonData[0]);
+      
+        // Create table header row
+        const headerRow = table.insertRow();
+        headers.forEach((headerText) => {
+          const header = document.createElement("th");
+          $(header).css("border" , "solid 1px #ccc")
+          header.textContent = headerText;
+          headerRow.appendChild(header);
+        });
+      
+        // Create table data rows
+        jsonData.forEach((dataObject) => {
+          const row = table.insertRow();
+          headers.forEach((header) => {
+            const cell = row.insertCell();
+            $(cell).css("border" , "solid 1px #ccc")
+            cell.textContent = dataObject[header] ?? ""; // Handle undefined values
+          });
+        });
+      
+        //$(table).css("border" , "solid 1px #ccc")
+        $(table).css("border-spacing" , "0pt")
+        $(table).css("font-size" , "10pt")
+
+        return table; // Return the created table element
+    }
+      
 
 }

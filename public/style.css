@@ -445,6 +445,7 @@ div
     color: #333;
     font-size: 11pt;
     border-radius: 10px;
+    overflow-x: auto;
 }
 
 .chat-waiting-animation
