@@ -53,9 +53,12 @@ var Chatbot =
     initTokenAndAccess: function(userdata)
     {
         let promise =  new Promise((resolve, reject)=>{
+            console.log("getToken")
             Chatbot.getToken(userdata).then(response=>{
                 Util.token = response.data.encoded;
+                console.log("checkAccess")
                 Chatbot.checkAccess(userdata).then(response=>{
+                    console.log(response)
                     if(response.data == true){
                         resolve();
                     }
@@ -284,9 +287,12 @@ var Chatbot =
         let promise = new Promise((resolve, reject)=>{
             let url = Chatbot.baseUrl + "/app-access/check?role=" + role + "&app=smart-chatbot";
             //let url = Chatbot.baseUrl + "/app-access?role=" + role;
-
+            console.log("CheckAccess.url")
+            console.log(url)
             Util.get(url, {}).then(response=>{
                 resolve(response)
+            }).catch((e)=>{
+                console.log(e)
             })
         });
         return promise;
