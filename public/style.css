@@ -202,8 +202,8 @@ div
     position:absolute;
     bottom: 50px;
     right: 20px;
-    width: 500px;
-    height: 900px;
+    width: 30%;
+    height: 80%;
     border-radius: 10px;
     border: solid 2px #004d43;
     z-index: 1230000;
@@ -275,7 +275,7 @@ div
 .chatbox > .content
 {
     width: calc(100% - 20px);
-    height: 680px;
+    height: calc(93% - 50px - 20px - 40px - 50px);
     background-color: #fff;
     color: #666;
     overflow: auto;

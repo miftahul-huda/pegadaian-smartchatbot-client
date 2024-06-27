@@ -226,13 +226,13 @@ var Chatbot =
         
                         </div>
                         <div class="chat-type-search chat-type-generic" data="semantic-search">
-                            Search content
+                            Cari Petunjuk
                         </div>
                         <div class="separator">
         
                         </div>
                         <div class="chat-type-query chat-type-generic" data="semantic-query">
-                            Analysis
+                            Analisis Data
                         </div>
                     </div>
                     <div class="footer">
