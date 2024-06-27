@@ -26,11 +26,14 @@
 <script>
     
     $(document).ready(function(){
+        //let url = "https://pegadaian-kbms-r3ykxv3ola-et.a.run.app/api/v1";
+        let url = "http://localhost:8000/api/v1";
+
         Chatbot.init(
             {   user: "p93233", 
                 fullname: "Miftahul Huda",
                 role: "AO",
                 token: 'dmVydGV4OkJpZ0RhdGExMjMh'
-            }, "https://pegadaian-kbms-r3ykxv3ola-et.a.run.app/api/v1");
+            }, url);
     });
 </script>

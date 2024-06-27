@@ -123,7 +123,7 @@ var Chatbot =
                         console.log("chatbot session")
                         console.log(Chatbot.session)
 
-                        Chatbot.openChatbox();
+                        Chatbot.openChatbox(Chatbot.clearContent);
                     })
 
                 }
@@ -132,6 +132,24 @@ var Chatbot =
                     Chatbot.openChatbox();
                 }
             });
+
+            $(".btn-new-session").on("click", function(){
+                    //start new session
+                    Chatbot.getNewSession().then(response=>{
+
+                        console.log("chatbot session")
+                        console.log(response)
+
+                        Chatbot.session = response.data.session;
+                        Chatbot.quota = response.data.quota;
+
+                        console.log("chatbot session")
+                        console.log(Chatbot.session)
+
+                        Chatbot.openChatbox(Chatbot.clearContent);
+                    })
+                
+            })
 
 
 
@@ -150,7 +168,13 @@ var Chatbot =
         return promise;
     }
     ,
-    openChatbox: function()
+    clearContent: function()
+    {
+        $(".chatbox .content").html("")
+        Chatbot.showQuota(Chatbot.quota)
+    }
+    ,
+    openChatbox: function(callback)
     {
         //Initialize chatbox events
         $(".chatbox").show("scale", { percent: 30 }, 200, function(){
@@ -168,6 +192,9 @@ var Chatbot =
                     Chatbot.sendChat();
                 }
             })
+
+            if(callback != null)
+                callback();
         });
     }
     ,
@@ -334,7 +361,8 @@ var Chatbot =
     
                 let url = Chatbot.baseUrl + Chatbot.getSearchUrl(Chatbot.chatType) + "?session=" + Chatbot.session;
                 let data = {
-                    query: q
+                    query: q,
+                    history: this.chatHistory
                 }
                 console.log(url);
                 console.log(data);
@@ -348,12 +376,19 @@ var Chatbot =
                     let resp = JSON.parse(text);
 
                     Chatbot.quota = response.data.quota;
-                    chatItem = Chatbot.createChatItem("bot", resp);
+                    chatItem = Chatbot.createChatItem("bot", resp, function(answer){
+                        Chatbot.chatHistory.push([q, answer])
+                    });
                     Chatbot.showQuota(Chatbot.quota);
     
                     $('.chat-waiting-animation').remove();
                     $(".chatbox .content").append(chatItem);
                     //Chatbot.scrollToBottom();
+                }).catch((e)=>{
+                    console.log(e)
+                    $('.chat-waiting-animation').remove();
+                    alert("Error. Tidak bisa mendapatkan respons dari bot.")
+
                 })
             }
   
@@ -361,7 +396,7 @@ var Chatbot =
         return promise;
     }
     ,
-    createChatItem: function(itemType, response)
+    createChatItem: function(itemType, response, callback)
     {
         let text = "";
         let htmlTable = null;
@@ -373,14 +408,21 @@ var Chatbot =
             {
                 text = response.result.penjelasan
                 let data = response.result.table;
-                data = Chatbot.tableDataToJson(data);
-                htmlTable = Chatbot.createTableFromJSON(data);
+                if(data != "None")
+                {
+                    data = Chatbot.tableDataToJson(data);
+                    htmlTable = Chatbot.createTableFromJSON(data);
+                }
+
             }
             else
             {
                 text= response.result;
             }
         }
+
+        if(callback != null)
+            callback(text);
 
         text = text.replace(/\n/g, "<br>");
         newText = text.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
